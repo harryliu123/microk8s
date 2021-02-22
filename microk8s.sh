@@ -8,8 +8,8 @@
 EMAIL=$1
 
 # 如果您的環境不是在 GCP 請自行調整以下變數
-EXTERNAL_IP=$(curl -s 169.254.169.254/computeMetadata/v1beta1/instance/network-interfaces/0/access-configs/0/external-ip)
-# EXTERNAL_IP=$(curl -s ifconfig.me)
+#EXTERNAL_IP=$(curl -s 169.254.169.254/computeMetadata/v1beta1/instance/network-interfaces/0/access-configs/0/external-ip)
+EXTERNAL_IP=$(curl -s ifconfig.me)
 
 sudo snap install microk8s --channel=1.18 --classic
 sudo microk8s.enable dns dashboard storage ingress helm3 rbac 
