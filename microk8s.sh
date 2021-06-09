@@ -11,7 +11,7 @@ EMAIL=$1
 #EXTERNAL_IP=$(curl -s 169.254.169.254/computeMetadata/v1beta1/instance/network-interfaces/0/access-configs/0/external-ip)
 EXTERNAL_IP=$(curl -s ifconfig.me)
 
-sudo snap install microk8s --channel=1.20 --classic
+sudo snap install microk8s --channel=1.2 --classic
 sudo microk8s.enable dns dashboard storage ingress helm3 rbac 
 
 sudo sh -c 'echo "--allow-privileged=true" >> /var/snap/microk8s/current/args/kube-apiserver'
@@ -43,14 +43,14 @@ echo "系統參數設定中 ... "
 sudo microk8s.kubectl patch $(sudo microk8s.kubectl get user.management.cattle.io -l authz.management.cattle.io/bootstrapping=admin-user -o name) --type='json' -p '[{"op":"replace","path":"/mustChangePassword","value":false},{"op":"replace","path":"/password","value":"$2a$10$3Y5m2c8O0B2kwk1PzyGoH.dywubyb0UI3OaUrACIL./LVsepUu1K2"}]'
 
 sudo microk8s.enable metrics-server
-sudo git clone https://github.com/abola/2day_catalogs.git
+sudo git clone https://github.com/harryliu123/2day_catalogs.git
 sudo microk8s.kubectl apply -f https://raw.githubusercontent.com/weaveworks/flagger/master/artifacts/flagger/crd.yaml
 #sudo microk8s.kubectl annotate daemonset nginx-ingress-microk8s-controller -n ingress prometheus.io/port=10254 prometheus.io/scrape=true
 sudo microk8s.kubectl create ns flagger
 sudo microk8s.helm3 install flagger -n flagger --set=externalIp=${EXTERNAL_IP} ./2day_catalogs/charts/flagger-server/0.27.0/
 #sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --type='json' -p='[{"op": "add", "path": "/spec/template/metadata/annotations/prometheus.io~1port", "value": "10254"}]'
 #sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --type='json' -p='[{"op": "add", "path": "/spec/template/metadata/annotations/prometheus.io~1scrape", "value": "true"}]'
-sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --patch "$(curl -s https://raw.githubusercontent.com/abola/2day_example_python/master/patch/nginx-ingress.yaml)"
+sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --patch "$(curl -s https://raw.githubusercontent.com/harryliu123/2day_example_python/master/patch/nginx-ingress.yaml)"
 sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/ports/-", "value": {"containerPort": 10254}}]'
 sleep 5
 sudo microk8s.kubectl wait --for=condition=ready pods -l name=nginx-ingress-microk8s -n ingress
