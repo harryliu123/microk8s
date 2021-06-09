@@ -11,7 +11,7 @@ EMAIL=$1
 #EXTERNAL_IP=$(curl -s 169.254.169.254/computeMetadata/v1beta1/instance/network-interfaces/0/access-configs/0/external-ip)
 EXTERNAL_IP=$(curl -s ifconfig.me)
 
-sudo snap install microk8s --channel=1.2 --classic
+sudo snap install microk8s --channel=1.20 --classic
 sudo microk8s.enable dns dashboard storage ingress helm3 rbac 
 
 sudo sh -c 'echo "--allow-privileged=true" >> /var/snap/microk8s/current/args/kube-apiserver'
