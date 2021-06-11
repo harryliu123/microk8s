@@ -12,7 +12,9 @@ EMAIL=$1
 EXTERNAL_IP=$(curl -s ifconfig.me)
 
 sudo snap install microk8s --channel=1.20 --classic
+sleep 5
 sudo microk8s.enable dns dashboard storage ingress helm3 rbac 
+sleep 5
 
 sudo sh -c 'echo "--allow-privileged=true" >> /var/snap/microk8s/current/args/kube-apiserver'
 sudo systemctl restart snap.microk8s.daemon-apiserver.service
@@ -20,7 +22,7 @@ sudo systemctl restart snap.microk8s.daemon-apiserver.service
 sudo microk8s.helm3 repo add jetstack https://charts.jetstack.io
 sudo microk8s.kubectl create namespace cert-manager
 sudo microk8s.kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
-sudo microk8s.helm3 install cert-manager jetstack/cert-manager --namespace cert-manager --version v0.15.1 --set installCRDs=true
+sudo microk8s.helm3 install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.3.1 --set installCRDs=true
 
 echo "等待 cert-manager 服務啟動 ..."
 sleep 3
