@@ -42,7 +42,7 @@ sleep 3
 
 echo "系統參數設定中 ... "
 
-sudo microk8s.kubectl patch $(sudo microk8s.kubectl get user.management.cattle.io -l authz.management.cattle.io/bootstrapping=admin-user -o name) --type='json' -p '[{"op":"replace","path":"/mustChangePassword","value":false},{"op":"replace","path":"/password","value":"$2a$10$3Y5m2c8O0B2kwk1PzyGoH.dywubyb0UI3OaUrACIL./LVsepUu1K2"}]'
+## sudo microk8s.kubectl patch $(sudo microk8s.kubectl get user.management.cattle.io -l authz.management.cattle.io/bootstrapping=admin-user -o name) --type='json' -p '[{"op":"replace","path":"/mustChangePassword","value":false},{"op":"replace","path":"/password","value":"$2a$10$3Y5m2c8O0B2kwk1PzyGoH.dywubyb0UI3OaUrACIL./LVsepUu1K2"}]'
 
 sudo microk8s.enable metrics-server
 sudo git clone https://github.com/harryliu123/2day_catalogs.git
@@ -56,6 +56,7 @@ sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingre
 sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/ports/-", "value": {"containerPort": 10254}}]'
 sleep 5
 sudo microk8s.kubectl wait --for=condition=ready pods -l name=nginx-ingress-microk8s -n ingress
+alias kubectl='microk8s kubectl'
 
 echo "----------------------------------------"
 echo "安裝完成"
@@ -63,5 +64,6 @@ echo "現在您可以開啟 https://rancher.${EXTERNAL_IP}.nip.io"
 echo "根據畫面建立admin 帳號及密碼"
 echo "----------------------------------------"
 echo "如果要驗證指令列"
-echo "microk8s.kubectl "
+echo "microk8s.kubectl get node"
+echo "kubectl get node "
 echo "----------------------------------------"
