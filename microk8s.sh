@@ -56,7 +56,8 @@ sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingre
 sudo microk8s.kubectl patch daemonset nginx-ingress-microk8s-controller -n ingress --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/ports/-", "value": {"containerPort": 10254}}]'
 sleep 5
 sudo microk8s.kubectl wait --for=condition=ready pods -l name=nginx-ingress-microk8s -n ingress
-alias kubectl='microk8s kubectl'
+alias kubectl='microk8s.kubectl'
+alias helm='microk8s.helm3'
 
 echo "----------------------------------------"
 echo "安裝完成"
