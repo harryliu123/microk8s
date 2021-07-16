@@ -25,7 +25,7 @@ sudo microk8s.kubectl label namespace cert-manager certmanager.k8s.io/disable-va
 sudo microk8s.helm3 install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.3.1 --set installCRDs=true
 
 echo "等待 cert-manager 服務啟動 ..."
-sleep 3
+sleep 10
 sudo microk8s.kubectl wait --for=condition=ready --timeout=120s pods -l app=cert-manager -n cert-manager
 sudo microk8s.kubectl wait --for=condition=ready --timeout=120s pods -l app=cainjector -n cert-manager
 sudo microk8s.kubectl wait --for=condition=ready --timeout=120s pods -l app=webhook -n cert-manager
